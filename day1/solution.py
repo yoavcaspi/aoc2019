@@ -2,8 +2,11 @@ import argparse
 from typing import List
 
 
-def sol() -> int:
-    return 1
+def sol1(data: List[str]) -> int:
+    res = 0
+    for line in data:
+        res += int(line) // 3 -2
+    return res
 
 
 def get_input(filename: str) -> List[str]:
@@ -17,7 +20,7 @@ def main() -> int:
     parser.add_argument('--filename', default='input.txt')
     args = parser.parse_args()
     data = get_input(args.filename)
-    sol()
+    print(sol1(data))
     return 0
 
 
