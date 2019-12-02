@@ -17,7 +17,7 @@ def test_1(data, expected):
                           (['1969'], 966),
                           (['100756'], 50346),
                           ))
-def test_1(data, expected):
+def test_2(data, expected):
     assert sol2(data) == expected
 
 
