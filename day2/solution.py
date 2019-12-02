@@ -28,7 +28,15 @@ def sol1(data: List[int]) -> int:
 
 
 def sol2(data: List[str]) -> int:
-    return 1
+    expected_data = 19690720
+    for noun in range(100):
+        for verb in range(100):
+            new_data = [int(x) for x in data[0].split(',')]
+            new_data[1] = noun
+            new_data[2] = verb
+            if expected_data == sol1(new_data):
+                return 100 * noun + verb
+    return -1
 
 
 def get_input(filename: str) -> List[str]:
