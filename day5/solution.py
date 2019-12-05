@@ -72,7 +72,11 @@ class Output(Io):
 
     def run(self, input_data: List[int], data: List[int], modes: int, *vals) -> Optional[int]:
         assert len(vals) == 1
-        return data[vals[0]]
+        if modes == 0:
+            return data[vals[0]]
+        else:
+            return vals[0]
+        return
 
 
 class ConditionalJump(Opcode):
@@ -215,7 +219,11 @@ def main() -> int:
     for line in data:
         new_data.append([int(x) for x in line.split(',')])
     print(sol1(new_data, [1]))
-    # print(sol2(data))
+    new_data = []
+    for line in data:
+        new_data.append([int(x) for x in line.split(',')])
+
+    print(sol2(new_data, [5]))
     return 0
 
 
