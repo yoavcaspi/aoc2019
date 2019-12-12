@@ -1,5 +1,6 @@
 from __future__ import annotations
 import argparse
+import math
 import re
 from typing import List, Dict, Any, Optional, NamedTuple, Tuple
 
@@ -92,8 +93,49 @@ def sol1(data: str, steps) -> int:
     return sum([moon.get_tot_energy() for moon in moons])
 
 
-def sol2(data: List[str]) -> int:
-    return 0
+def sol2(data: str) -> int:
+    pattern = re.compile(r"<x=(-?\d+), y=(-?\d+), z=(-?\d+)>")
+    moons: List[Moon] = []
+    data.strip()
+    for line in data.split('\n'):
+        if line == '':
+            continue
+        m = pattern.match(line)
+        p = Position(int(m.group(1)), int(m.group(2)), int(m.group(3)))
+        moon = Moon(p, Velocity(0, 0, 0))
+        moons.append(moon)
+    x_cycle = None
+    y_cycle = None
+    z_cycle = None
+    i = 0
+    while x_cycle is None or y_cycle is None or z_cycle is None:
+        for moon in moons:
+            moon.apply_gravity(*moons)
+        for moon in moons:
+            moon.apply_velocity()
+        x, y, z = False, False, False
+        for moon in moons:
+            if x_cycle is None and moon.velocity.x != 0:
+                x = True
+            if y_cycle is None and moon.velocity.y != 0:
+                y = True
+            if z_cycle is None and moon.velocity.z != 0:
+                z = True
+        if x_cycle is None and not x:
+            x_cycle = i + 1
+        if y_cycle is None and not y:
+            y_cycle = i + 1
+        if z_cycle is None and not z:
+            z_cycle = i + 1
+        i += 1
+    return lcm([x_cycle, y_cycle, z_cycle]) * 2
+
+
+def lcm(a: List[int]) -> int:
+    ret = a[0]
+    for i in a[1:]:
+        ret = ret * i // math.gcd(ret, i)
+    return ret
 
 
 def get_input(filename: str) -> str:
@@ -108,7 +150,7 @@ def main() -> int:
     args = parser.parse_args()
     data = get_input(args.filename)
     print(sol1(data, 1000))
-    print(sol2(data, 1000))
+    print(sol2(data))
     return 0
 
 
