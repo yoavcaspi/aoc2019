@@ -246,7 +246,7 @@ def sol1(data: str) -> int:
                     blocks += 1
     return blocks
 
-display_chars = {0: " ", 1: "|", 2: "#", 3: "-", 4: "x"}
+display_chars = {0: " ", 1: "|", 2: "#", 3: "-", 4: "O"}
 
 def sol2(data: str) -> int:
     line = [int(num) for num in data.split(',')]
