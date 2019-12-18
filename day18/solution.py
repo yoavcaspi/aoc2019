@@ -12,23 +12,24 @@ def next_pos(x, y):
 
 
 def sol1(data: str) -> int:
-    board: Dict[Tuple[int, int], str] = {}
+    board: List[List[str]] = []
     my_location: Optional[Tuple[int, int]] = None
     keys_count: int = 0
     for y, line in enumerate(data.splitlines()):
+        board.append([])
         for x, c in enumerate(line):
             if c == "@":
                 my_location = (x, y)
             if c.islower():
                 keys_count += 1
-            board[(x, y)] = c
+            board[y].append(c)
     visited = set()
     states = [(frozenset(), my_location, 0)]
     while True:
         next_states = []
         for keys, (x, y), steps in states:
             for next_x, next_y in next_pos(x, y):
-                c = board[(next_x, next_y)]
+                c = board[next_y][next_x]
                 if (keys, (next_x, next_y)) in visited:
                     continue
                 elif c == "#":
