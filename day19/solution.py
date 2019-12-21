@@ -274,11 +274,23 @@ def sol2(data: str) -> int:
     rel_path = 0
     extended_mem = defaultdict(int)
     size = len(line)
+    slope = None
+    for i in range(50):
+        for j in range(50):
+            if i == j == 0:
+                continue
+            input_data = [i, j]
+            output = run_IntCode(extended_mem, input_data, ir, line[:], rel_path, size)
+            if output == "#":
+                slope = j / i
+                break
+        if slope is not None:
+            break
     # slope is 1.19 (x = y *1.19)
     min_x = 0
-    max_x = 4800
+    max_x = 5000
     mid_x = (max_x - min_x) // 2
-    mid_y = int(mid_x // 1.19)
+    mid_y = int(mid_x // slope)
     x = None
     y = None
     while min_x + 1 < max_x:
