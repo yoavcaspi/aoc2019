@@ -290,7 +290,38 @@ def run_IntCode(extended_mem: Dict[int, int],
 
 
 def sol2(data: str) -> int:
-    return 2
+    line = [int(num) for num in data.split(',')]
+    memory = [line[:] for _ in range(NUM_NICS)]
+    ir = [0] * 50
+    rel_path = [0] * 50
+    extended_mems = [defaultdict(int) for _ in range(NUM_NICS)]
+    size = len(line)
+    input_data_array = [[i] for i in range(NUM_NICS)]
+    nat_x = None
+    nat_y = None
+    nat_y_values = []
+    while True:
+        idle_flag = True
+        for i in range(NUM_NICS):
+            extended_mems[i], ir[i], rel_path[i], output = run_IntCode(extended_mems[i], input_data_array[i], ir[i],
+                                                                       memory[i], rel_path[i], size)
+            if output is not None:
+                idle_flag = False
+                address, x, y = output
+                if address == 255:
+                    nat_x = x
+                    nat_y = y
+                    continue
+                input_data_array[address].append(x)
+                input_data_array[address].append(y)
+        if idle_flag and all([len(input_data) == 0 for input_data in input_data_array]):
+            assert nat_x is not None
+            if nat_y_values:
+                if nat_y_values[-1] == nat_y:
+                    return nat_y
+            nat_y_values.append(nat_y)
+            input_data_array[0].append(nat_x)
+            input_data_array[0].append(nat_y)
 
 
 def get_input(filename: str) -> str:
@@ -305,7 +336,7 @@ def main() -> int:
     args = parser.parse_args()
     data = get_input(args.filename)
     print(sol1(data))
-    # print(sol2(data))
+    print(sol2(data))
     return 0
 
 
