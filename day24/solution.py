@@ -1,6 +1,6 @@
 from __future__ import annotations
 import argparse
-from typing import Tuple, List, Dict, Any, Set
+from typing import Tuple, Dict, Set
 from collections import defaultdict
 
 
@@ -28,19 +28,15 @@ def sol1(data: str) -> int:
             for x in range(5):
                 if board[x, y] == "#" and neighbors_count[x, y] != 1:
                     board[x, y] = "."
-                elif board[x, y] == "." and neighbors_count[x,y] in (1,2):
+                elif board[x, y] == "." and neighbors_count[x, y] in (1, 2):
                     board[x, y] = "#"
-        print()
-        for y in range(5):
-            for x in range(5):
-                print(board[x, y], end="")
-            print()
     ret_val: int = 0
     for y in range(5):
         for x in range(5):
-            if board[x,y] == "#":
+            if board[x, y] == "#":
                 ret_val += 2 ** (y * 5 + x)
     return ret_val
+
 
 def sol2(data: str, size: int = 10_007, pos: int = 2019) -> int:
     return 2
